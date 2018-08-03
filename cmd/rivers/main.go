@@ -15,7 +15,9 @@ import (
 var (
 	flgListen          = flag.String("listen", "", "Listen address and port (address:port)")
 	flgUpstreams       = flag.String("upstreams", "", "Comma-separated upstream servers (addr1:port1,addr2:port2")
-	flgShutdownTimeout = flag.String("shutdown-timeout", "", "Timeout for server shutting-down gracefully (disabled if specified \"0\")")
+	flgShutdownTimeout = flag.String("shutdown-timeout", "0", "Timeout for server shutting-down gracefully (disabled if specified \"0\")")
+	flgDialTimeout     = flag.String("dial-timeout", "5s", "Timeout for dial to an upstream server")
+	flgDialKeepAlive   = flag.String("dial-keep-alive", "3m", "Timeout for dial keepalive to an upstream server")
 )
 
 func serve(lns []net.Listener, upstreams []string, cfg rivers.Config) {
@@ -47,18 +49,23 @@ func run() error {
 	}
 	upstreams := strings.Split(*flgUpstreams, ",")
 
-	var shutdownTimeout time.Duration
-	if len(*flgShutdownTimeout) > 0 {
-		var err error
-		shutdownTimeout, err = time.ParseDuration(*flgShutdownTimeout)
-		if err != nil {
-			return err
-		}
+	var dialer = &net.Dialer{DualStack: true}
+	var err error
+	dialer.Timeout, err = time.ParseDuration(*flgDialTimeout)
+	if err != nil {
+		return err
+	}
+	dialer.KeepAlive, err = time.ParseDuration(*flgDialKeepAlive)
+	if err != nil {
+		return err
 	}
 
-	cfg := rivers.Config{
-		ShutdownTimeout: shutdownTimeout,
+	cfg := rivers.Config{Dialer: dialer}
+	cfg.ShutdownTimeout, err = time.ParseDuration(*flgShutdownTimeout)
+	if err != nil {
+		return err
 	}
+
 	g := &cmd.Graceful{
 		Listen: listen,
 		Serve: func(lsn []net.Listener) {

@@ -15,8 +15,7 @@ import (
 )
 
 const (
-	keepAliveTimeout = 3 * time.Minute
-	copyBufferSize   = 64 << 10
+	copyBufferSize = 64 << 10
 )
 
 // Config presends TCP servers
@@ -40,10 +39,7 @@ type Server struct {
 func NewServer(upstreams []string, cfg Config) *Server {
 	dialer := cfg.Dialer
 	if dialer == nil {
-		dialer = &net.Dialer{
-			KeepAlive: keepAliveTimeout,
-			DualStack: true,
-		}
+		dialer = &net.Dialer{}
 	}
 	logger := cfg.Logger
 	if logger == nil {
