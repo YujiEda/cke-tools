@@ -20,29 +20,6 @@ var (
 	flgDialKeepAlive   = flag.String("dial-keep-alive", "3m", "Timeout for dial keepalive to an upstream server")
 )
 
-func serve(lns []net.Listener, upstreams []string, cfg rivers.Config) {
-	for _, ln := range lns {
-		s := rivers.NewServer(upstreams, cfg)
-		s.Serve(ln)
-
-	}
-	err := cmd.Wait()
-	if err != nil && !cmd.IsSignaled(err) {
-		log.ErrorExit(err)
-	}
-}
-
-func listen() ([]net.Listener, error) {
-	if len(*flgListen) == 0 {
-		return nil, errors.New("--listen is blank")
-	}
-	ln, err := net.Listen("tcp", *flgListen)
-	if err != nil {
-		return nil, err
-	}
-	return []net.Listener{ln}, nil
-}
-
 func run() error {
 	if len(*flgUpstreams) == 0 {
 		return errors.New("--upstreams is blank")
@@ -66,14 +43,17 @@ func run() error {
 		return err
 	}
 
-	g := &cmd.Graceful{
-		Listen: listen,
-		Serve: func(lsn []net.Listener) {
-			serve(lsn, upstreams, cfg)
-		},
-		ExitTimeout: 30 * time.Second,
+	if len(*flgListen) == 0 {
+		return errors.New("--listen is blank")
 	}
-	g.Run()
+	listen, err := net.Listen("tcp", *flgListen)
+	if err != nil {
+		return err
+	}
+
+	s := rivers.NewServer(upstreams, cfg)
+	s.Serve(listen)
+
 	return cmd.Wait()
 }
 
