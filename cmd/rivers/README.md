@@ -6,10 +6,10 @@ Rivers is a simple TCP reverse proxy written in GO.
 Usage
 -----
 
-Launch rivers by docker as the following:
+Launch rivers by docker as follows:
 
 ```console
-$ docker run quay.io/cybozu/rivers:0 \
+$ ./rivers
     --listen localhost:6443 \
     --upstreams 10.0.0.100:6443,10.0.0.101:6443,10.0.0.102:6443
 ```
