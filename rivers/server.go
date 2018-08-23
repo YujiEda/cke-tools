@@ -134,7 +134,7 @@ func (s *Server) randomUpstream() (net.Conn, error) {
 		}
 
 		s.logger.Warn("failed to connect to proxy server", map[string]interface{}{
-			"upstream": conn,
+			"upstream": u,
 		})
 	}
 	return nil, errors.New("no avaiable upstreams servers")
