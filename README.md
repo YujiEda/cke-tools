@@ -1,3 +1,8 @@
+[![GitHub release](https://img.shields.io/github/release/cybozu-go/cke-tools.svg?maxAge=60)][releases]
+[![CircleCI](https://circleci.com/gh/cybozu-go/cke-tools.svg?style=svg)](https://circleci.com/gh/cybozu-go/cke-tools)
+[![GoDoc](https://godoc.org/github.com/cybozu-go/cke-tools?status.svg)][godoc]
+[![Go Report Card](https://goreportcard.com/badge/github.com/cybozu-go/cke-tools)](https://goreportcard.com/report/github.com/cybozu-go/cke-tools)
+
 cke-tools
 =========
 
@@ -11,4 +16,6 @@ License
 
 CKE tools is licensed under MIT license.
 
+[releases]: https://github.com/cybozu-go/cke-tools/releases
+[godoc]: https://godoc.org/github.com/cybozu-go/cke-tools
 [CKE]: https://github.com/cybozu-go/cke
