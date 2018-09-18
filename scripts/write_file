@@ -6,11 +6,15 @@ import sys
 from tempfile import NamedTemporaryFile
 
 
+def octint(v: str) ->int:
+    return int(v, 8)
+
+
 def main():
     p = ArgumentParser()
-    p.add_argument('--dir-mode', type=int, default=0o755,
+    p.add_argument('--dir-mode', type=octint, default='755',
                    help='permission bits for new directories')
-    p.add_argument('--mode', type=int, default=0o644,
+    p.add_argument('--mode', type=octint, default='644',
                    help='permission bits for the file')
     p.add_argument('file', metavar='FILE', help='the filename to be created')
 
