@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.0] - 2018-09-18
+
 ### Added
 - Opt in to [Go modules](https://github.com/golang/go/wiki/Modules).
 - Utilities to create files and directories.
@@ -19,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add rivers: an TCP reverse proxy for kubernetes apiservers (#1).
 
-[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v0.2...HEAD
+[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/cybozu-go/cke-tools/compare/v0.2...v1.0.0
 [0.2]: https://github.com/cybozu-go/cke-tools/compare/v0.1...v0.2
 [0.1]: https://github.com/cybozu-go/cke-tools/compare/b797246...v0.1
