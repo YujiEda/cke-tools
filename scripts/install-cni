@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+HOSTBIN=/host/bin
+HOSTNETD=/host/net.d
+CNI_VERSION=0.7.1
+CNIDIR=/usr/local/cni
+
+mkdir -p $CNIDIR/bin
+mkdir -p $CNIDIR/etc/cni/net.d
+
+curl -sSLf https://github.com/containernetworking/plugins/archive/v${CNI_VERSION}.tar.gz | tar zxf -
+cd plugins-$CNI_VERSION && \
+./build.sh && \
+mv ./bin/* $CNIDIR/bin/ && \
+rm -r ../plugins-$CNI_VERSION
+
+cat <<EOF | tee $CNIDIR/etc/cni/net.d/99-loopback.conf
+{
+    "cniVersion": "$CNI_VERSION",
+    "type": "loopback"
+}
+EOF
+
+cp -a $CNIDIR/bin/* $HOSTBIN/
+cp -a $CNIDIR/etc/cni/net.d/* $HOSTNETD/

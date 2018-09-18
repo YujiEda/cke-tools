@@ -10,7 +10,7 @@ CKE tools is a suite of the various tools used by [CKE][].
 This repository contains the following tools in the sub directories:
 
 - [rivers](./cmd/rivers): Simple TCP reverse proxy for HA control plane.
-- [scripts](./scripts): Python utilities
+- [scripts](./scripts): Utilities
 
 License
 -------
