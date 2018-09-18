@@ -24,6 +24,7 @@ def main():
 
     for d in ns.dirs:
         os.makedirs(d, mode=ns.mode, exist_ok=True)
+        os.chmod(d, ns.mode)
 
 
 if __name__ == '__main__':
