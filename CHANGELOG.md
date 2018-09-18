@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Utilities to install CNI plugins (`install-cni`)
+
 ## [1.0.0] - 2018-09-18
 
 ### Added
