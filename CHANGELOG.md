@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2018-09-18
+
 ### Added
 - Utilities to install CNI plugins (`install-cni`)
 
@@ -24,7 +26,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add rivers: an TCP reverse proxy for kubernetes apiservers (#1).
 
-[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/cybozu-go/cke-tools/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/cybozu-go/cke-tools/compare/v0.2...v1.0.0
 [0.2]: https://github.com/cybozu-go/cke-tools/compare/v0.1...v0.2
 [0.1]: https://github.com/cybozu-go/cke-tools/compare/b797246...v0.1
