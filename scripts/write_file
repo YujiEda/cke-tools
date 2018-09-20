@@ -24,7 +24,7 @@ def main():
 
     d = os.path.dirname(ns.file)
     os.makedirs(d, mode=ns.dir_mode, exist_ok=True)
-    os.chmod(d, ns.mode)
+    os.chmod(d, ns.dir_mode)
     with NamedTemporaryFile(dir=d, delete=False) as f:
         f.write(sys.stdin.buffer.read())
         f.flush()
