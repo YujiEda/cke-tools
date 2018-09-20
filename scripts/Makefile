@@ -1,6 +1,6 @@
 # Makefile to test Python scripts
 
-SCRIPTS = write_file make_directories
+SCRIPTS = write_files make_directories
 PYTHON3_DEPS:=pylint3 pycodestyle
 PYLINT3=pylint3
 PYCODESTYLE3=pycodestyle
