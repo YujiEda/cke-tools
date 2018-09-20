@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2018-09-20
+
 ### Added
 - `write_files` script to extract tar archive under a root directory.
 
@@ -37,7 +39,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add rivers: an TCP reverse proxy for kubernetes apiservers (#1).
 
-[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.2.1...HEAD
+[1.2.0]: https://github.com/cybozu-go/cke-tools/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/cybozu-go/cke-tools/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/cybozu-go/cke-tools/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/cybozu-go/cke-tools/compare/v0.2...v1.0.0
