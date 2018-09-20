@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Fix wrong permission bug in `write_file`.
+
 ## [1.1.0] - 2018-09-18
 
 ### Added
