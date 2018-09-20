@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- `write_files` script to extract tar archive under a root directory.
+
+### Removed
+- `write_file` script.
+
 ## [1.1.1] - 2018-09-20
 
 ### Changed
