@@ -23,7 +23,7 @@ def main():
     for t in tar:
         if not t.isreg():
             continue
-        p = os.path.join(ns.prefix, t.name)
+        p = os.path.normpath(ns.prefix + "/" + t.name)
         pd = os.path.dirname(p)
         os.makedirs(pd, 0o755, exist_ok=True)
         with open(p, "wb") as f:
