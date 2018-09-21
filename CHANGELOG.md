@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.1] - 2018-09-21
+
 ### Changed
 - fix bug in `write_files`.
 
@@ -43,6 +45,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add rivers: an TCP reverse proxy for kubernetes apiservers (#1).
 
 [Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/cybozu-go/cke-tools/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/cybozu-go/cke-tools/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/cybozu-go/cke-tools/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/cybozu-go/cke-tools/compare/v1.0.0...v1.1.0
