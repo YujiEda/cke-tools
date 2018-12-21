@@ -1,7 +1,9 @@
 package etcd_backup
 
 import (
+	"compress/gzip"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"mime"
 	"net/http"
@@ -10,8 +12,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/coreos/etcd/pkg/fileutil"
 	"github.com/cybozu-go/etcdutil"
-	"github.com/cybozu-go/log"
+)
+
+const (
+	backupSucceed = "backup successfully"
 )
 
 type Server struct {
@@ -89,14 +95,91 @@ func (s Server) handleBackupDownload(w http.ResponseWriter, r *http.Request, fil
 func (s Server) handleBackupSave(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	now := time.Now()
-	fileName := snapshotName(now)
-	etcd, err := etcdutil.NewClient(s.cfg.Etcd)
+	filename := filepath.Join(s.cfg.BackupDir, snapshotName(now))
+	cli, err := etcdutil.NewClient(s.cfg.Etcd)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	defer cli.Close()
+
+	// Take snapshot to temp file
+	partpath := filename + ".part"
+	defer os.RemoveAll(partpath)
+
+	fp, err := os.OpenFile(partpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, fileutil.PrivateFileMode)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	var rd io.ReadCloser
+	rd, err = cli.Snapshot(ctx)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	_, err = io.Copy(fp, rd)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	err = fileutil.Fsync(fp)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	err = fp.Close()
 	if err != nil {
 		renderError(ctx, w, InternalServerError(err))
 		return
 	}
 
-	//	TODO implement snapshot save
+	// Rename temp file to expected file name
+	err = os.Rename(partpath, filename)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+
+	// Compress snapshot file
+	f, err := os.Open(filename)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+
+	gzipName := filename + ".gz"
+	zf, err := os.Create(gzipName)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	zw := gzip.NewWriter(zf)
+
+	_, err = io.Copy(zw, f)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	defer os.Remove(filename)
+
+	err = zw.Close()
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+
+	fi, err := os.Stat(gzipName)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+
+	renderJSON(w, map[string]interface{}{
+		"message":  backupSucceed,
+		"filename": fi.Name(),
+		"filesize": fi.Size(),
+	}, http.StatusOK)
 }
 
 func snapshotName(date time.Time) string {

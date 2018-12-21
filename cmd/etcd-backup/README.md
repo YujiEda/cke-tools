@@ -102,10 +102,5 @@ $ curl -s -XPOST 'localhost:8080/api/v1/backup'
     "filename": "snapshot-20181220_024105.tar.gz",
     "filesize": 125927
 }
-
-$ curl -s -XPOST 'localhost:8080/api/v1/backup'
-{
-    "message": "failed to save an etcd backup"
-}
 ```
 

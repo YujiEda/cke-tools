@@ -1,4 +1,5 @@
-# github.com/coreos/etcd v3.3.9+incompatible
+# github.com/coreos/etcd v3.3.10+incompatible
+github.com/coreos/etcd/pkg/fileutil
 github.com/coreos/etcd/clientv3
 github.com/coreos/etcd/clientv3/namespace
 github.com/coreos/etcd/auth/authpb
@@ -6,6 +7,10 @@ github.com/coreos/etcd/etcdserver/api/v3rpc/rpctypes
 github.com/coreos/etcd/etcdserver/etcdserverpb
 github.com/coreos/etcd/mvcc/mvccpb
 github.com/coreos/etcd/pkg/types
+# github.com/coreos/go-systemd v0.0.0-20181031085051-9002847aa142
+github.com/coreos/go-systemd/journal
+# github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f
+github.com/coreos/pkg/capnslog
 # github.com/cybozu-go/etcdutil v1.3.1
 github.com/cybozu-go/etcdutil
 # github.com/cybozu-go/log v1.5.0
@@ -16,7 +21,7 @@ github.com/cybozu-go/netutil
 github.com/cybozu-go/well
 # github.com/fsnotify/fsnotify v1.4.7
 github.com/fsnotify/fsnotify
-# github.com/gogo/protobuf v1.1.1
+# github.com/gogo/protobuf v1.2.0
 github.com/gogo/protobuf/gogoproto
 github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
@@ -56,7 +61,7 @@ github.com/spf13/jwalterweatherman
 github.com/spf13/pflag
 # github.com/spf13/viper v1.2.1
 github.com/spf13/viper
-# golang.org/x/net v0.0.0-20181005035420-146acd28ed58
+# golang.org/x/net v0.0.0-20181220203305-927f97764cc3
 golang.org/x/net/netutil
 golang.org/x/net/context
 golang.org/x/net/trace
@@ -65,16 +70,16 @@ golang.org/x/net/http2
 golang.org/x/net/http2/hpack
 golang.org/x/net/http/httpguts
 golang.org/x/net/idna
-# golang.org/x/sys v0.0.0-20181005133103-4497e2df6f9e
+# golang.org/x/sys v0.0.0-20181221065408-8ff4e546d48b
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.0
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
 golang.org/x/text/secure/bidirule
 golang.org/x/text/unicode/bidi
-# google.golang.org/genproto v0.0.0-20181004005441-af9cb2a35e7f
+# google.golang.org/genproto v0.0.0-20181221010529-a1fde7408246
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.15.0
+# google.golang.org/grpc v1.17.0
 google.golang.org/grpc
 google.golang.org/grpc/codes
 google.golang.org/grpc/credentials
@@ -90,9 +95,11 @@ google.golang.org/grpc/encoding
 google.golang.org/grpc/encoding/proto
 google.golang.org/grpc/internal
 google.golang.org/grpc/internal/backoff
+google.golang.org/grpc/internal/binarylog
 google.golang.org/grpc/internal/channelz
 google.golang.org/grpc/internal/envconfig
 google.golang.org/grpc/internal/grpcrand
+google.golang.org/grpc/internal/grpcsync
 google.golang.org/grpc/internal/transport
 google.golang.org/grpc/naming
 google.golang.org/grpc/peer
@@ -101,6 +108,9 @@ google.golang.org/grpc/resolver/dns
 google.golang.org/grpc/resolver/passthrough
 google.golang.org/grpc/stats
 google.golang.org/grpc/tap
+google.golang.org/grpc/credentials/internal
 google.golang.org/grpc/balancer/base
-# gopkg.in/yaml.v2 v2.2.1
+google.golang.org/grpc/binarylog/grpc_binarylog_v1
+google.golang.org/grpc/internal/syscall
+# gopkg.in/yaml.v2 v2.2.2
 gopkg.in/yaml.v2
