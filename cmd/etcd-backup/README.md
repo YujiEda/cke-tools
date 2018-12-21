@@ -19,13 +19,14 @@ Configuration file
 ------------------
 
 etcd-backup reads etcd configurations from a YAML file.
-Parameters are defined by [cybozu-go/etcdutil](https://github.com/cybozu-go/etcdutil), and not shown below will use default values of the etcdutil.
 
-Name         | Type    | Required | Description
-----         | ----    | -------- | -----------
-`backup-dir` | string  | No       | etcd backup saved directory.  Default: `/etcd-backup/`.
-`listen`     | string  | No       | REST API listen address and port.  Default: `0.0.0.0:8080`.
-`rotate`     | int     | No       | Keep a number of backup files.  Default: `14`.
+
+Name         | Type            | Required | Description
+----         | ----            | -------- | -----------
+`backup-dir` | string          | No       | etcd backup saved directory.  Default: `/etcd-backup/`.
+`listen`     | string          | No       | REST API listen address and port.  Default: `0.0.0.0:8080`.
+`rotate`     | int             | No       | Keep a number of backup files.  Default: `14`.
+`etcd`       | etcdutil.Config | Yes      | etcd parameter defined by [cybozu-go/etcdutil](https://github.com/cybozu-go/etcdutil).
 
 APIs
 ----
