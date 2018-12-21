@@ -10,6 +10,7 @@ CKE tools is a suite of the various tools used by [CKE][].
 This repository contains the following tools in the sub directories:
 
 - [rivers](./cmd/rivers): Simple TCP reverse proxy for HA control plane.
+- [etcd-backup](./cmd/etcd-backup): Simple etcd backup service.
 - [scripts](./scripts): Utilities
 
 License
