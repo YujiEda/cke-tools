@@ -64,7 +64,7 @@ Retrieve an etcd backup file.
 
 **Failure responses**
 
-- <FILENAME> is not found.
+- FILENAME is not found.
 
     - HTTP status code: 404 Not Found
     

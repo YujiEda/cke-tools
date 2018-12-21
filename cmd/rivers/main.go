@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/cybozu-go/cke-tools/rivers"
-	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/log"
+	"github.com/cybozu-go/well"
 )
 
 var (
@@ -54,15 +54,15 @@ func run() error {
 	s := rivers.NewServer(upstreams, cfg)
 	s.Serve(listen)
 
-	return cmd.Wait()
+	return well.Wait()
 }
 
 func main() {
 	flag.Parse()
-	cmd.LogConfig{}.Apply()
+	well.LogConfig{}.Apply()
 
 	err := run()
-	if err != nil && !cmd.IsSignaled(err) {
+	if err != nil && !well.IsSignaled(err) {
 		log.ErrorExit(err)
 	}
 }
