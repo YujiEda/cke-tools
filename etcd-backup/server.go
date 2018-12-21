@@ -1,12 +1,17 @@
 package etcd_backup
 
 import (
+	"fmt"
 	"io/ioutil"
 	"mime"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
+
+	"github.com/cybozu-go/etcdutil"
+	"github.com/cybozu-go/log"
 )
 
 type Server struct {
@@ -82,5 +87,18 @@ func (s Server) handleBackupDownload(w http.ResponseWriter, r *http.Request, fil
 }
 
 func (s Server) handleBackupSave(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	now := time.Now()
+	fileName := snapshotName(now)
+	etcd, err := etcdutil.NewClient(s.cfg.Etcd)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
 
+	//	TODO implement snapshot save
+}
+
+func snapshotName(date time.Time) string {
+	return fmt.Sprintf("snapshot-%s.db", date.Format("20060102_150405"))
 }
