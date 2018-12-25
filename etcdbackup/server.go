@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -113,6 +114,12 @@ func (s Server) handleBackupSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = removeOldBackups(s.cfg.BackupDir, s.cfg.Rotate)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+
 	renderJSON(w, map[string]interface{}{
 		"message":  backupSucceed,
 		"filename": bkName,
@@ -186,4 +193,30 @@ func saveBackup(ctx context.Context, filename string, cli *clientv3.Client) (str
 		return "", 0, err
 	}
 	return fi.Name(), fi.Size(), nil
+}
+
+func removeOldBackups(dir string, rotate int) error {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+	if len(files) < rotate {
+		return nil
+	}
+
+	sort.Slice(files, func(i, j int) bool {
+		return files[i].ModTime().Unix() > files[j].ModTime().Unix()
+	})
+
+	removeFiles := files[rotate:]
+	for _, f := range removeFiles {
+		if f.IsDir() {
+			continue
+		}
+		err := os.Remove(filepath.Join(dir, f.Name()))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
