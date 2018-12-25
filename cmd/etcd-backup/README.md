@@ -1,24 +1,24 @@
-etcd-backup
+etcdbackup
 ===========
 
-etcd-backup is REST API based etcd backup service.
+etcdbackup is REST API based etcd backup service.
 
 Usage
 -----
 
-Launch etcd-backup by docker as follows:
+Launch etcdbackup by docker as follows:
 
 ```console
-$ ./etcd-backup --config string
+$ ./etcdbackup --config string
 ```
 
-etcd-backup listen HTTP protocol to receive request from HTTP clients.
+etcdbackup listen HTTP protocol to receive request from HTTP clients.
 When it receives a request, action for etcd backup and reply the result. 
 
 Configuration file
 ------------------
 
-etcd-backup reads etcd configurations from a YAML file.
+etcdbackup reads etcd configurations from a YAML file.
 
 
 Name         | Type            | Required | Description

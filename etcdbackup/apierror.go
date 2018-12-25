@@ -1,4 +1,4 @@
-package etcd_backup
+package etcdbackup
 
 import "net/http"
 

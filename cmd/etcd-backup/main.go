@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/cybozu-go/cke-tools/etcd-backup"
+	"github.com/cybozu-go/cke-tools/etcdbackup"
 	"github.com/cybozu-go/log"
 	"github.com/cybozu-go/well"
 	"gopkg.in/yaml.v2"
@@ -27,13 +27,13 @@ func main() {
 	if err != nil {
 		log.ErrorExit(err)
 	}
-	cfg := etcd_backup.NewConfig()
+	cfg := etcdbackup.NewConfig()
 	err = yaml.NewDecoder(f).Decode(cfg)
 	if err != nil {
 		log.ErrorExit(err)
 	}
 
-	server := etcd_backup.NewServer(cfg)
+	server := etcdbackup.NewServer(cfg)
 	s := &well.HTTPServer{
 		Server: &http.Server{
 			Addr:    cfg.Listen,

@@ -1,4 +1,4 @@
-package etcd_backup
+package etcdbackup
 
 import "github.com/cybozu-go/etcdutil"
 
@@ -8,6 +8,7 @@ const (
 	defaultRotate    = 14
 )
 
+// NewConfig returns configuration for etcdbackup
 func NewConfig() *Config {
 	return &Config{
 		BackupDir: defaultBackupDir,
@@ -17,6 +18,7 @@ func NewConfig() *Config {
 	}
 }
 
+// Config is configuration parameters
 type Config struct {
 	BackupDir string           `yaml:"backup-dir,omitempty"`
 	Listen    string           `yaml:"listen,omitempty"`
