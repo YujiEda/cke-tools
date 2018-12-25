@@ -20,7 +20,7 @@ func main() {
 	well.LogConfig{}.Apply()
 
 	if *flgConfig == "" {
-		log.ErrorExit(errors.New("usage: etcd-backup -config=<CONFIGFILE>"))
+		log.ErrorExit(errors.New("usage: etcdbackup -config=<CONFIGFILE>"))
 	}
 
 	f, err := os.Open(*flgConfig)
