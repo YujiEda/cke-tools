@@ -10,7 +10,7 @@ import (
 	"github.com/cybozu-go/cke-tools/etcdbackup"
 	"github.com/cybozu-go/log"
 	"github.com/cybozu-go/well"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 var flgConfig = flag.String("config", "", "path to configuration file")
@@ -41,6 +41,10 @@ func main() {
 		},
 		ShutdownTimeout: 3 * time.Minute,
 	}
+
+	log.Info("started", map[string]interface{}{
+		"listen": cfg.Listen,
+	})
 
 	err = s.ListenAndServe()
 	if err != nil {
