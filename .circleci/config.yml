@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  rivers:
+  build:
     docker:
       - image: quay.io/cybozu/golang:1.11-bionic
       - image: quay.io/coreos/etcd:v3.3
@@ -25,5 +25,5 @@ workflows:
   version: 2
   main:
     jobs:
-      - rivers
+      - build
       - scripts
