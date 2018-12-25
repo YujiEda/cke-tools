@@ -3,6 +3,7 @@ jobs:
   rivers:
     docker:
       - image: quay.io/cybozu/golang:1.11-bionic
+      - image: quay.io/coreos/etcd:v3.3
     working_directory: /work
     steps:
       - checkout
