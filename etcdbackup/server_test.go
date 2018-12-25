@@ -7,8 +7,10 @@ import (
 	"net/http/httptest"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func testHandleBackup(t *testing.T) {
@@ -69,8 +71,11 @@ func testHandleBackup(t *testing.T) {
 	if !strings.Contains(list[0], "snapshot-") {
 		t.Error("file does not contain \"snapshot-\"", list[0])
 	}
+	backup1 := list[0]
 
 	// Rotate backups
+	time.Sleep(time.Second)
+
 	w = httptest.NewRecorder()
 	r = httptest.NewRequest("POST", "/api/v1/backup", nil)
 	s.ServeHTTP(w, r)
@@ -99,6 +104,9 @@ func testHandleBackup(t *testing.T) {
 	if len(list) != 1 {
 		t.Error("len(list) != 1:", len(list))
 	}
+	if list[0] == backup1 {
+		t.Error("backup is not rotated", list[0])
+	}
 
 	// Download
 	w = httptest.NewRecorder()
@@ -124,6 +132,33 @@ func testHandleBackup(t *testing.T) {
 
 	w = httptest.NewRecorder()
 	r = httptest.NewRequest("GET", "/api/v1/backup/foobar", nil)
+	s.ServeHTTP(w, r)
+
+	resp = w.Result()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Error("wrong status code:", resp.StatusCode)
+	}
+	resp.Body.Close()
+
+	// File does not exist
+	w = httptest.NewRecorder()
+	r = httptest.NewRequest("GET", "/api/v1/backup/snapshot-foobar.db.gz", nil)
+	s.ServeHTTP(w, r)
+
+	resp = w.Result()
+	if resp.StatusCode != http.StatusNotFound {
+		t.Error("wrong status code:", resp.StatusCode)
+	}
+	resp.Body.Close()
+
+	// File exists but directory
+	err = os.MkdirAll(filepath.Join(backupDir, "snapshot-foobar.db.gz"), 0755)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w = httptest.NewRecorder()
+	r = httptest.NewRequest("GET", "/api/v1/backup/snapshot-foobar.db.gz", nil)
 	s.ServeHTTP(w, r)
 
 	resp = w.Result()

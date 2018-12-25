@@ -5,10 +5,10 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"mime"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -20,7 +20,8 @@ import (
 )
 
 const (
-	backupSucceed = "backup successfully"
+	backupSucceed       = "backup successfully"
+	snapshotFilePattern = "snapshot-*.db.gz"
 )
 
 // Server is etcdbackup server
@@ -60,17 +61,23 @@ func (s Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s Server) handleBackupList(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	info, err := ioutil.ReadDir(s.cfg.BackupDir)
+	matches, err := filepath.Glob(filepath.Join(s.cfg.BackupDir, snapshotFilePattern))
 	if err != nil {
 		renderError(ctx, w, InternalServerError(err))
 		return
 	}
+
 	var files []string
-	for _, i := range info {
-		if i.IsDir() {
+	for _, f := range matches {
+		fi, err := os.Stat(f)
+		if err != nil {
+			renderError(ctx, w, InternalServerError(err))
+			return
+		}
+		if fi.IsDir() {
 			continue
 		}
-		files = append(files, i.Name())
+		files = append(files, path.Base(f))
 	}
 
 	renderJSON(w, files, http.StatusOK)
@@ -78,9 +85,19 @@ func (s Server) handleBackupList(w http.ResponseWriter, r *http.Request) {
 
 func (s Server) handleBackupDownload(w http.ResponseWriter, r *http.Request, filename string) {
 	ctx := r.Context()
+	matched, err := filepath.Match(snapshotFilePattern, filename)
+	if err != nil {
+		renderError(ctx, w, InternalServerError(err))
+		return
+	}
+	if !matched {
+		renderError(ctx, w, APIErrBadRequest)
+		return
+	}
+
 	target := filepath.Join(s.cfg.BackupDir, filename)
 	fi, err := os.Stat(target)
-	if os.IsNotExist(err) {
+	if os.IsNotExist(err) || fi.IsDir() {
 		renderError(ctx, w, APIErrNotFound)
 		return
 	}
@@ -196,19 +213,29 @@ func saveBackup(ctx context.Context, filename string, cli *clientv3.Client) (str
 }
 
 func removeOldBackups(dir string, rotate int) error {
-	files, err := ioutil.ReadDir(dir)
+	matches, err := filepath.Glob(filepath.Join(dir, snapshotFilePattern))
 	if err != nil {
 		return err
 	}
-	if len(files) < rotate {
+
+	var snapshotFiles []os.FileInfo
+	for _, f := range matches {
+		fi, err := os.Stat(f)
+		if err != nil {
+			return err
+		}
+		snapshotFiles = append(snapshotFiles, fi)
+	}
+
+	if len(snapshotFiles) < rotate {
 		return nil
 	}
 
-	sort.Slice(files, func(i, j int) bool {
-		return files[i].ModTime().Unix() > files[j].ModTime().Unix()
+	sort.Slice(snapshotFiles, func(i, j int) bool {
+		return snapshotFiles[i].ModTime().Unix() > snapshotFiles[j].ModTime().Unix()
 	})
 
-	removeFiles := files[rotate:]
+	removeFiles := snapshotFiles[rotate:]
 	for _, f := range removeFiles {
 		if f.IsDir() {
 			continue

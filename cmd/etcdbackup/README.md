@@ -65,6 +65,10 @@ Retrieve an etcd backup file.
 
 **Failure responses**
 
+- FILENAME does not match "snapshot-*.db.gz"
+
+    - HTTP status code: 400 Bad Request
+
 - FILENAME is not found.
 
     - HTTP status code: 404 Not Found

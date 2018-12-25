@@ -29,5 +29,6 @@ func InternalServerError(e error) APIError {
 
 // Common API errors
 var (
-	APIErrNotFound = APIError{http.StatusNotFound, "requested resource is not found", nil}
+	APIErrNotFound   = APIError{http.StatusNotFound, "requested resource is not found", nil}
+	APIErrBadRequest = APIError{http.StatusBadRequest, "invalid request", nil}
 )
