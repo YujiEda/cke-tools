@@ -1,17 +1,17 @@
 version: 2
 jobs:
-  rivers:
+  build:
     docker:
       - image: quay.io/cybozu/golang:1.11-bionic
+      - image: quay.io/coreos/etcd:v3.3
     working_directory: /work
     steps:
       - checkout
-      - run: go get -v -t -d ./...
-      - run: test -z "$(gofmt -s -l . | tee /dev/stderr)"
-      - run: golint -set_exit_status ./...
-      - run: go build ./...
-      - run: go test -race -v ./...
-      - run: go vet ./...
+      - run: test -z "$(gofmt -s -l . | grep -v '^vendor' | tee /dev/stderr)"
+      - run: golint -set_exit_status $(go list -mod=vendor ./... | grep -v /vendor/)
+      - run: go build -mod=vendor ./...
+      - run: go test -mod=vendor -race -v ./...
+      - run: go vet -mod=vendor ./...
   scripts:
     docker:
       - image: quay.io/cybozu/ubuntu-dev:18.04
@@ -25,5 +25,5 @@ workflows:
   version: 2
   main:
     jobs:
-      - rivers
+      - build
       - scripts

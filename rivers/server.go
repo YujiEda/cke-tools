@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/log"
 	"github.com/cybozu-go/netutil"
+	"github.com/cybozu-go/well"
 )
 
 const (
@@ -27,7 +27,7 @@ type Config struct {
 
 // Server presents TCP proxy server
 type Server struct {
-	cmd.Server
+	well.Server
 
 	upstreams []string
 	logger    *log.Logger
@@ -47,7 +47,7 @@ func NewServer(upstreams []string, cfg Config) *Server {
 	}
 
 	s := &Server{
-		Server: cmd.Server{
+		Server: well.Server{
 			ShutdownTimeout: cfg.ShutdownTimeout,
 		},
 
@@ -66,7 +66,7 @@ func NewServer(upstreams []string, cfg Config) *Server {
 }
 
 func (s *Server) handleConnection(ctx context.Context, conn net.Conn) {
-	fields := cmd.FieldsFromContext(ctx)
+	fields := well.FieldsFromContext(ctx)
 	fields[log.FnType] = "access"
 	fields["client_addr"] = conn.RemoteAddr().String()
 
@@ -87,7 +87,7 @@ func (s *Server) handleConnection(ctx context.Context, conn net.Conn) {
 	}
 
 	st := time.Now()
-	env := cmd.NewEnvironment(ctx)
+	env := well.NewEnvironment(ctx)
 	env.Go(func(ctx context.Context) error {
 		buf := s.pool.Get().([]byte)
 		_, err := io.CopyBuffer(destConn, tc, buf)
@@ -111,7 +111,7 @@ func (s *Server) handleConnection(ctx context.Context, conn net.Conn) {
 	env.Stop()
 	err = env.Wait()
 
-	fields = cmd.FieldsFromContext(ctx)
+	fields = well.FieldsFromContext(ctx)
 	fields["elapsed"] = time.Since(st).Seconds()
 	if err != nil {
 		fields[log.FnError] = err.Error()
@@ -137,5 +137,5 @@ func (s *Server) randomUpstream() (net.Conn, error) {
 			"upstream": u,
 		})
 	}
-	return nil, errors.New("no avaiable upstreams servers")
+	return nil, errors.New("no available upstreams servers")
 }
