@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2018-12-25
+
+### Added
+- Add `etcdbackup` service (#10).
+
+### Removed
+- Remove `go.sum` (#9).
+
 ## [1.2.1] - 2018-09-21
 
 ### Changed
@@ -44,7 +52,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add rivers: an TCP reverse proxy for kubernetes apiservers (#1).
 
-[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/cybozu-go/cke-tools/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/cybozu-go/cke-tools/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/cybozu-go/cke-tools/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/cybozu-go/cke-tools/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/cybozu-go/cke-tools/compare/v1.1.0...v1.1.1
